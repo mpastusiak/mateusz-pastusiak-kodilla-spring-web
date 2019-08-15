@@ -113,13 +113,13 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                            <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                Application functionality:
-                                            </p>
-                                            <ul th:each="function : ${application_functionality}">
-                                                <li th:text="${function}"></li>
+                                        <div th:if="${is_list}">
+                                            <p th:text="${list_header}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;" ></p>
+                                            <ul th:each="list_iterator : ${list_content}">
+                                                <li th:text="${list_iterator}"></li>
                                             </ul>
                                             <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;" th:text="${goodbye_message}"></p>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>

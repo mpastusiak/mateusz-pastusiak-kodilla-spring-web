@@ -24,6 +24,18 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
+    private String getAllMailContent(final Mail mail) {
+        switch (mail.getSubject()) {
+            case "Tasks: New Trello card":
+                return mailCreatorService.buildTrelloCardEmail(mail.getMessage());
+            case "Tasks: One a day email":
+                return mailCreatorService.buildScheaduledTasksEmail(mail.getMessage());
+            default: {
+                return mail.getMessage();
+            }
+        }
+    }
+
     public void send(final Mail mail){
         LOGGER.info("Starting email preparation...");
         try {
@@ -39,7 +51,7 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            messageHelper.setText(getAllMailContent(mail), true);
         };
     }
 
