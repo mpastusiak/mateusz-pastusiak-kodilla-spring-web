@@ -24,14 +24,16 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    private String getAllMailContent(final Mail mail) {
+    private boolean isHTMLmail(final Mail mail) {
         switch (mail.getSubject()) {
             case "Tasks: New Trello card":
-                return mailCreatorService.buildTrelloCardEmail(mail.getMessage());
+                mail.setMessage(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
+                return true;
             case "Tasks: One a day email":
-                return mailCreatorService.buildScheaduledTasksEmail(mail.getMessage());
+                mail.setMessage(mailCreatorService.buildScheaduledTasksEmail(mail.getMessage()));
+                return true;
             default: {
-                return mail.getMessage();
+                return false;
             }
         }
     }
@@ -39,7 +41,11 @@ public class SimpleEmailService {
     public void send(final Mail mail){
         LOGGER.info("Starting email preparation...");
         try {
-            javaMailSender.send(createMimeMessage(mail));
+            if (isHTMLmail(mail)) {
+                javaMailSender.send(createMimeMessage(mail));
+            } else {
+                javaMailSender.send(createMailMessage(mail));
+            }
             LOGGER.info("Email has been sent.");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
@@ -51,7 +57,7 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(getAllMailContent(mail), true);
+            messageHelper.setText(mail.getMessage(), true);
         };
     }
 

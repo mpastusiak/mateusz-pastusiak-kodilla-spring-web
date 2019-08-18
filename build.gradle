@@ -13,7 +13,7 @@ plugins {
 
 
 apply plugin: 'org.springframework.boot'
-//apply plugin: 'war'
+apply plugin: 'war'
 
 group = 'com.crud'
 version = '0.0.1-SNAPSHOT'
@@ -31,8 +31,8 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-actuator'
 	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-	//compile 'mysql:mysql-connector-java'
-	compile 'org.postgresql:postgresql'
+	compile 'mysql:mysql-connector-java'
+	//compile 'org.postgresql:postgresql'
 
 	//Swagger
 	compile 'io.springfox:springfox-swagger2:2.7.0'
@@ -43,5 +43,5 @@ dependencies {
 
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
